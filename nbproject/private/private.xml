@@ -5,7 +5,7 @@
         <group>
             <file>file:/C:/Users/Marik/Documents/NetBeansProjects/creditservicermi/src/server/Main.java</file>
             <file>file:/C:/Users/Marik/Documents/NetBeansProjects/creditservicermi/src/dao/CRUDDAO.java</file>
-            <file>file:/C:/Users/Marik/Documents/NetBeansProjects/creditservicermi/src/dbconnection/MyDBConnection.java</file>
+            <file>file:/C:/Users/Marik/Documents/NetBeansProjects/creditservicermi/src/controller/IndexController.java</file>
             <file>file:/C:/Users/Marik/Documents/NetBeansProjects/creditservicermi/src/server/ClientServiceThread.java</file>
         </group>
     </open-files>

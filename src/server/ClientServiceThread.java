@@ -47,7 +47,7 @@ public class ClientServiceThread extends Thread {
                     out.flush();
                     //AbstractUser user = (Client) msg.getData();
                     
-                    System.out.println("command: " + msg.getCommand() + msg.getData());
+                    System.out.println("command: " + msg.getCommand() + msg.getData() + "\n" + response);
                 }else{
                     throw new Exception("Request conteiner must be instanceof RequestMsg");
                 }
