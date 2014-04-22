@@ -5,8 +5,12 @@
  */
 package server;
 
+import com.marina.entity.creditprogram.CreditProgram;
+import dao.creditprogramdao.CreditProgramDAO;
+import dbconnection.MyDBConnection;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  *

@@ -28,7 +28,7 @@ public class ManagerDAO extends CRUDDAO<Manager>{
     
     @Override
     public Manager read(int id) {
-        String sql = "SELECT * FROM users WHERE id = " + id;
+        String sql = "SELECT * FROM user WHERE id = " + id;
         try {
             statement = dbConnection.createStatement();
             resultSet = statement.executeQuery(sql);

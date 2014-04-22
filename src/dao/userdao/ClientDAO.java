@@ -28,7 +28,7 @@ public class ClientDAO extends CRUDDAO<Client>{
     
     @Override
     public Client read(int id) {
-        String sql = "SELECT * FROM users WHERE id = " + id;
+        String sql = "SELECT * FROM user WHERE id = " + id;
         try {
             statement = dbConnection.createStatement();
             resultSet = statement.executeQuery(sql);
@@ -41,6 +41,5 @@ public class ClientDAO extends CRUDDAO<Client>{
         }
 
         return client;
-    }
-    
+    }  
 }

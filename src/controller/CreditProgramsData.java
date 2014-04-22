@@ -5,15 +5,16 @@
  */
 package controller;
 
-import com.marina.entity.user.AbstractUser;
+import com.marina.entity.creditprogram.CreditProgram;
 import com.marina.message.RequestMsg;
 import com.marina.message.ResponseMsg;
-import dao.userdao.GuestDAO;
+import dao.creditprogramdao.CreditProgramDAO;
 import dbconnection.MyDBConnection;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,22 +22,22 @@ import java.util.logging.Logger;
  *
  * @author Marik
  */
-public class Authorization {
-    
+public class CreditProgramsData {
+
     protected String method;
     protected ResponseMsg response;
 
-    public Authorization(RequestMsg msg) {
+    public CreditProgramsData(RequestMsg msg) {
 
     }
-
+    
     public ResponseMsg indexAction(RequestMsg msg) {
 
         method = route(msg.getCommand());
 
         Method indexActionMethod;
         try {
-            Class<?> className = Class.forName(this.getClass().getName());
+            Class<?> className = Class.forName("controller.CreditProgramsData");
             Constructor<?> cons = className.getConstructor(RequestMsg.class);
             Object classNameObject = cons.newInstance(msg);
             indexActionMethod = className.getDeclaredMethod(method, RequestMsg.class);
@@ -52,19 +53,15 @@ public class Authorization {
         return classCommandArray[1];
     }
 
-    public ResponseMsg login(RequestMsg msg) {
-        boolean identification;
-        AbstractUser user = (AbstractUser) msg.getData();
-
+    public ResponseMsg getCreditPrograms(RequestMsg msg) {
         Connection connection = MyDBConnection.getConnection();
-        GuestDAO guestDAO = new GuestDAO(connection);
-        identification = guestDAO.read(user);
-
-        if (identification) {
-            return new ResponseMsg(true, "ok", "hello");
-        } else {
-            return new ResponseMsg(false, "login fail", "bye");
+        CreditProgramDAO creditProgramDAO = new CreditProgramDAO(connection);
+        ArrayList<CreditProgram> creditProgramList = creditProgramDAO.readAll();
+        if(creditProgramList != null){
+            return new ResponseMsg(true, "OK", creditProgramList);
         }
+
+        return new ResponseMsg(false, "login fail", "bye");
     }
-    
+
 }

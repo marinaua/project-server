@@ -7,7 +7,6 @@
 package dao.userdao;
 
 import com.marina.entity.user.Administrator;
-import com.marina.entity.user.Client;
 import dao.CRUDDAO;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -28,7 +27,7 @@ public class AdministratorDAO extends CRUDDAO<Administrator>{
     
     @Override
     public Administrator read(int id) {
-        String sql = "SELECT * FROM users WHERE id = " + id;
+        String sql = "SELECT * FROM user WHERE id = " + id;
         try {
             statement = dbConnection.createStatement();
             resultSet = statement.executeQuery(sql);
