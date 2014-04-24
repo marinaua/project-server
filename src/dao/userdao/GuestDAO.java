@@ -5,13 +5,15 @@
  */
 package dao.userdao;
 
-import com.marina.entity.user.AbstractUser;
-import com.marina.entity.user.Client;
-import com.marina.entity.user.Guest;
-import com.marina.entity.user.Manager;
+import com.marina.entity.user.DeprecatedAbstractUser;
+import com.marina.entity.user.DeprecatedClient;
+import com.marina.entity.user.DeprecatedGuest;
+import com.marina.entity.user.DeprecatedManager;
 import dao.CRUDDAO;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,17 +21,19 @@ import java.util.logging.Logger;
  *
  * @author Marik
  */
-public class GuestDAO extends CRUDDAO<Guest> {
+public class GuestDAO extends CRUDDAO<DeprecatedGuest> {
 
-    protected AbstractUser user;
+    protected DeprecatedAbstractUser user;
     protected String role;
 
     public GuestDAO(Connection dbConnection) {
         super(dbConnection);
     }
 
-    public boolean read(AbstractUser guest) {
+    public boolean read(DeprecatedGuest guest) {
         String sql = "SELECT role FROM user WHERE login = '" + guest.getLogin() + "' AND password = '" + guest.getPassword() + "'";
+        Statement statement;
+        ResultSet resultSet;
         try {
             statement = dbConnection.createStatement();
             resultSet = statement.executeQuery(sql);
@@ -44,8 +48,10 @@ public class GuestDAO extends CRUDDAO<Guest> {
         return role != null;
     }
     
-    public String getRole(AbstractUser guest) {
+    public String getRole(DeprecatedAbstractUser guest) {
         String sql = "SELECT role FROM user WHERE login = '" + guest.getLogin() + "' AND password = '" + guest.getPassword() + "'";
+        Statement statement;
+        ResultSet resultSet;
         try {
             statement = dbConnection.createStatement();
             resultSet = statement.executeQuery(sql);
@@ -61,7 +67,7 @@ public class GuestDAO extends CRUDDAO<Guest> {
     }
 
     @Override
-    public Guest read(int id) {
+    public DeprecatedGuest read(int id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

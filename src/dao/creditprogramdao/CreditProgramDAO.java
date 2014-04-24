@@ -10,7 +10,9 @@ import com.marina.entity.creditprogram.CreditProgram;
 import dao.CRUDDAO;
 import dao.userdao.ClientDAO;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,6 +33,8 @@ public class CreditProgramDAO extends CRUDDAO<CreditProgram>{
     @Override
     public CreditProgram read(int id) {
         String sql = "SELECT * FROM credit_program WHERE id = " + id;
+        Statement statement;
+        ResultSet resultSet;
         try {
             statement = dbConnection.createStatement();
             resultSet = statement.executeQuery(sql);
@@ -50,6 +54,8 @@ public class CreditProgramDAO extends CRUDDAO<CreditProgram>{
     public ArrayList<CreditProgram> readAll() {
         creditProgramList = new ArrayList<>();
         String sql = "SELECT * FROM credit_program";
+        Statement statement;
+        ResultSet resultSet;
         try {
             statement = dbConnection.createStatement();
             resultSet = statement.executeQuery(sql);

@@ -6,11 +6,13 @@
 
 package dao.userdao;
 
-import com.marina.entity.user.Administrator;
-import com.marina.entity.user.Manager;
+import com.marina.entity.user.DeprecatedAdministrator;
+import com.marina.entity.user.DeprecatedManager;
 import dao.CRUDDAO;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,23 +20,25 @@ import java.util.logging.Logger;
  *
  * @author Marik
  */
-public class ManagerDAO extends CRUDDAO<Manager>{
+public class ManagerDAO extends CRUDDAO<DeprecatedManager>{
     
-    private Manager manager;
+    private DeprecatedManager manager;
 
     public ManagerDAO(Connection dbConnection) {
         super(dbConnection);
     }
     
     @Override
-    public Manager read(int id) {
+    public DeprecatedManager read(int id) {
         String sql = "SELECT * FROM user WHERE id = " + id;
+        Statement statement;
+        ResultSet resultSet;
         try {
             statement = dbConnection.createStatement();
             resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
                 resultSet.getString("name");
-                manager = new Manager();
+                manager = new DeprecatedManager();
             }
         } catch (SQLException ex) {
             Logger.getLogger(ClientDAO.class.getName()).log(Level.SEVERE, null, ex);

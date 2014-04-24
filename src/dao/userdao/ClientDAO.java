@@ -6,11 +6,13 @@
 
 package dao.userdao;
 
-import com.marina.entity.user.AbstractUser;
-import com.marina.entity.user.Client;
+import com.marina.entity.user.DeprecatedAbstractUser;
+import com.marina.entity.user.DeprecatedClient;
 import dao.CRUDDAO;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,23 +20,25 @@ import java.util.logging.Logger;
  *
  * @author Marik
  */
-public class ClientDAO extends CRUDDAO<Client>{
+public class ClientDAO extends CRUDDAO<DeprecatedClient>{
     
-    private Client client;
+    private DeprecatedClient client;
     
     public ClientDAO(Connection dbConnection) {
         super(dbConnection);
     }
     
     @Override
-    public Client read(int id) {
+    public DeprecatedClient read(int id) {
         String sql = "SELECT * FROM user WHERE id = " + id;
+        Statement statement;
+        ResultSet resultSet;
         try {
             statement = dbConnection.createStatement();
             resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
                 resultSet.getString("name");
-                client = new Client();
+                client = new DeprecatedClient();
             }
         } catch (SQLException ex) {
             Logger.getLogger(ClientDAO.class.getName()).log(Level.SEVERE, null, ex);

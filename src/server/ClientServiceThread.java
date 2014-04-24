@@ -5,8 +5,8 @@
  */
 package server;
 
-import com.marina.entity.user.AbstractUser;
-import com.marina.entity.user.Client;
+import com.marina.entity.user.DeprecatedAbstractUser;
+import com.marina.entity.user.DeprecatedClient;
 import com.marina.message.RequestMsg;
 import com.marina.message.ResponseMsg;
 import controller.IndexController;
@@ -45,7 +45,7 @@ public class ClientServiceThread extends Thread {
                     ResponseMsg response =  controller.indexAction(msg); 
                     out.writeObject(response);
                     out.flush();
-                    //AbstractUser user = (Client) msg.getData();
+                    //AbstractUser user = (DeprecatedClient) msg.getData();
                     
                     System.out.println("command: " + msg.getCommand() + msg.getData() + "\n" + response);
                 }else{
