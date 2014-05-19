@@ -20,6 +20,7 @@ public class AbstractController implements iController {
 
     protected String method;
     protected ResponseMsg response;
+    private static Logger abstractControllerLogger = Logger.getLogger(AbstractController.class.getName());
 
     @Override
     public ResponseMsg indexAction(RequestMsg msg) {
@@ -33,15 +34,15 @@ public class AbstractController implements iController {
             indexActionMethod = className.getDeclaredMethod(method, RequestMsg.class);
             response = (ResponseMsg) indexActionMethod.invoke(classNameObject, msg);
         } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | ClassNotFoundException | InstantiationException ex) {
-            Logger.getLogger(AuthorizationController.class.getName()).log(Level.SEVERE, null, ex);
+            abstractControllerLogger.log(Level.SEVERE, "Exception in indexAction recursive method: ", ex);
         }
         return response;
     }
 
     protected String route(String command) {
-        String[] classCommandArray = command.split("\\.");     
+        String[] classCommandArray = command.split("\\.");
         String className = "controller." + classCommandArray[0] + "Controller";
-        String methodName = classCommandArray[1]; 
+        String methodName = classCommandArray[1];
         if (this.getClass().getName().equals("controller.IndexController")) {
             return className;
         }

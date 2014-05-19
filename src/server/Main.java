@@ -5,12 +5,10 @@
  */
 package server;
 
-import com.marina.entity.creditprogram.CreditProgram;
-import dao.creditprogramdao.CreditProgramDAO;
-import dbconnection.MyDBConnection;
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
+import java.util.logging.LogManager;
 
 /**
  *
@@ -19,6 +17,13 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) throws Exception {
+        try {
+            LogManager.getLogManager().readConfiguration(
+               Main.class.getResourceAsStream("/loggerconfig/logging.properties"));
+        } catch (IOException e) {
+            System.err.println("Could not setup logger configuration: " + e.toString());
+        }
+
         ServerSocket m_ServerSocket = new ServerSocket(12111);
         int id = 0;
         while (true) {

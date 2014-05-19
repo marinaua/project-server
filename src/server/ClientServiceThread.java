@@ -5,15 +5,22 @@
  */
 package server;
 
-import com.marina.entity.user.DeprecatedAbstractUser;
-import com.marina.entity.user.DeprecatedClient;
 import com.marina.message.RequestMsg;
 import com.marina.message.ResponseMsg;
 import controller.IndexController;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-
+import java.net.SocketException;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -24,6 +31,8 @@ public class ClientServiceThread extends Thread {
     Socket clientSocket;
     int clientID = -1;
     boolean running = true;
+    private static Logger clientServiceThreadLogger = Logger.getLogger(ClientServiceThread.class.getName());
+    private File visitHistoryFile;
 
     ClientServiceThread(Socket s, int i) {
         clientSocket = s;
@@ -32,6 +41,7 @@ public class ClientServiceThread extends Thread {
 
     @Override
     public void run() {
+
         System.out.println("Accepted Client : ID - " + clientID + " : Address - "
                 + clientSocket.getInetAddress().getHostName());
         try {
@@ -39,22 +49,54 @@ public class ClientServiceThread extends Thread {
             ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
             while (running) {
                 Object clientCommand = in.readObject();
-                if(clientCommand instanceof RequestMsg){
+                if (clientCommand instanceof RequestMsg) {
                     RequestMsg msg = (RequestMsg) clientCommand;
                     IndexController controller = new IndexController();
-                    ResponseMsg response =  controller.indexAction(msg); 
+                    ResponseMsg response = controller.indexAction(msg);
                     out.writeObject(response);
                     out.flush();
-                    //AbstractUser user = (DeprecatedClient) msg.getData();
+                                        
+                  
+                   
+                        out.close();
+                        in.close();
+                        clientSocket.close();
                     
-                    System.out.println("command: " + msg.getCommand() + msg.getData() + "\n" + response);
-                }else{
-                    throw new Exception("Request conteiner must be instanceof RequestMsg");
+                    //Log client requests
+                    clientRequestLog(msg);
+                } else {
+                    throw new Exception("Request container must be instanceof RequestMsg");
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+
+        } catch (Exception ex) {
+            //clientServiceThreadLogger.log(Level.SEVERE, "Exception in runnung client thread: ", ex);
         }
+    }
+
+    private void clientRequestLog(RequestMsg msg) {
+        visitHistoryFile = new File(getPath());
+        try {
+            try (FileWriter writer = new FileWriter(visitHistoryFile, true)) {
+                String message = "Command: " + msg.getCommand() + ". User " + msg.getUser();
+                writer.write(getCurrentTime() + message + System.getProperty("line.separator") + System.getProperty("line.separator"));
+            }
+        } catch (IOException ex) {
+            clientServiceThreadLogger.log(Level.SEVERE, "Exception in writing visit history: ", ex);
+        }
+    }
+
+    private String getPath() {
+        Path path = FileSystems.getDefault().getPath("logs", "visithistory", getCurrentDate() + ".txt");
+        return path.toString();
+    }
+
+    private String getCurrentTime() {
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ").format(new Date());
+    }
+
+    private String getCurrentDate() {
+        return new SimpleDateFormat("yyyy-MM-dd").format(new Date());
     }
 
 }

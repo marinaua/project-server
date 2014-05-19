@@ -5,16 +5,11 @@
  */
 package controller;
 
-import com.marina.entity.user.DeprecatedClient;
-import com.marina.entity.user.DeprecatedGuest;
-import com.marina.entity.user.IUser;
 import com.marina.entity.user.User;
 import com.marina.exception.AuthorizeException;
 import com.marina.message.RequestMsg;
 import com.marina.message.ResponseMsg;
 import dao.userdao.UserDAO;
-import dbconnection.MyDBConnection;
-import java.sql.Connection;
 
 /**
  *
@@ -25,8 +20,7 @@ public class AuthorizationController extends AbstractController {
     public ResponseMsg login(RequestMsg msg) {
         boolean registered;
         User user = (User) msg.getData();
-        Connection connection = MyDBConnection.getConnection();
-        UserDAO userDAO = new UserDAO(connection);
+        UserDAO userDAO = new UserDAO();
         
         registered = userDAO.isRegistered(user);     
         

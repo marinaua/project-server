@@ -7,7 +7,6 @@ package dao.userdao;
 
 import com.marina.entity.user.User;
 import dao.CRUDDAO;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -21,11 +20,8 @@ import java.util.logging.Logger;
 public class UserDAO extends CRUDDAO<User> {
 
     private User user;
-
-    public UserDAO(Connection dbConnection) {
-        super(dbConnection);
-    }
-
+    private static Logger userDAOLogger = Logger.getLogger(UserDAO.class.getName());
+    
     @Override
     public User read(int id) {
         String sql = "SELECT * FROM user WHERE id = " + id;
@@ -46,7 +42,7 @@ public class UserDAO extends CRUDDAO<User> {
                 user.setRole(resultSet.getString("role"));
             }
         } catch (SQLException ex) {
-            Logger.getLogger(ClientDAO.class.getName()).log(Level.SEVERE, null, ex);
+            userDAOLogger.log(Level.SEVERE, "Exception in reading user info by id: ", ex);
         }
 
         return user;
@@ -80,7 +76,7 @@ public class UserDAO extends CRUDDAO<User> {
                 user.setRole(resultSet.getString("role"));
             }
         } catch (SQLException ex) {
-            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
+            userDAOLogger.log(Level.SEVERE, "Exception in reading credit program info by user with login and pass: ", ex);
         }
 
         return user;
@@ -97,7 +93,7 @@ public class UserDAO extends CRUDDAO<User> {
             result = resultSet.next();
 
         } catch (SQLException ex) {
-            Logger.getLogger(ClientDAO.class.getName()).log(Level.SEVERE, null, ex);
+            userDAOLogger.log(Level.SEVERE, "Exception in if user registered method: ", ex);
         }
         return result;
 

@@ -5,8 +5,7 @@
  */
 package dao;
 
-import com.marina.entity.user.User;
-import dao.userdao.ClientDAO;
+import dbconnection.MyDBConnection;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,9 +20,10 @@ import java.util.logging.Logger;
 public abstract class AbstractDAO {
 
     protected final Connection dbConnection;
+    private static Logger abstractDAOLogger = Logger.getLogger(AbstractDAO.class.getName());
 
-    public AbstractDAO(Connection dbConnection) {
-        this.dbConnection = dbConnection;
+    public AbstractDAO() {
+        this.dbConnection = MyDBConnection.getConnection();
     }
 
     protected void executeUpdate(String sql) {
@@ -32,7 +32,7 @@ public abstract class AbstractDAO {
             statement = dbConnection.createStatement();
             statement.executeUpdate(sql);
         } catch (SQLException ex) {
-            Logger.getLogger(CRUDDAO.class.getName()).log(Level.SEVERE, null, ex);
+            abstractDAOLogger.log(Level.SEVERE, "Exception in executing update: ", ex);
         }
     }
 
@@ -44,7 +44,7 @@ public abstract class AbstractDAO {
             resultSet = statement.executeQuery(sql);
         } catch (SQLException ex) {
             System.out.println(sql);
-            Logger.getLogger(ClientDAO.class.getName()).log(Level.SEVERE, null, ex);
+            abstractDAOLogger.log(Level.SEVERE, "Exception in executing query: ", ex);
         }
 
         return resultSet;

@@ -18,16 +18,23 @@ import java.util.ArrayList;
  * @author Marik
  */
 public class CreditProgramController extends AbstractController {
-
+    
+    
+    
     public ResponseMsg getCreditPrograms(RequestMsg msg) {
-        Connection connection = MyDBConnection.getConnection();
-        CreditProgramDAO creditProgramDAO = new CreditProgramDAO(connection);
+        CreditProgramDAO creditProgramDAO = new CreditProgramDAO();
         ArrayList<CreditProgram> creditProgramList = creditProgramDAO.readAll();
         if(creditProgramList != null){
             return new ResponseMsg(true, "OK", creditProgramList);
         }
 
         return new ResponseMsg(false, "getting program failed", "bye");
+    }
+    
+    public ResponseMsg updateCreditProgram(RequestMsg msg){
+        CreditProgramDAO creditProgramDAO = new CreditProgramDAO();
+        creditProgramDAO.update((CreditProgram)msg.getData());
+        return new ResponseMsg(true, "OK", null);
     }
 
 }

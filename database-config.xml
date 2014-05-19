@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="Windows-1251"?>
+
+<!-- Database configuration -->
+<database
+  driver="com.mysql.jdbc.Driver"
+  dataURL="jdbc:mysql://localhost/creditsystem">
+  <prop name="user">rootadmin</prop>
+  <prop name="password">admin</prop>
+</database>

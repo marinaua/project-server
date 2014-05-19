@@ -17,7 +17,9 @@ import java.util.logging.Logger;
  * @author Marik
  */
 public class IndexController extends AbstractController {
-
+    
+    private static Logger indexControllerLogger = Logger.getLogger(IndexController.class.getName());
+    
     @Override
     public ResponseMsg indexAction(RequestMsg msg) {
         try {
@@ -28,7 +30,7 @@ public class IndexController extends AbstractController {
             Method indexActionMethod = className.getMethod("indexAction", RequestMsg.class);
             response = (ResponseMsg) indexActionMethod.invoke(classNameObject, msg);
         } catch (ClassNotFoundException | NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-            Logger.getLogger(IndexController.class.getName()).log(Level.SEVERE, null, ex);
+            indexControllerLogger.log(Level.SEVERE, "Exception in indexAction recursive method: ", ex);
         }
 
         return response;

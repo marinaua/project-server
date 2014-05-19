@@ -8,8 +8,6 @@ package dao.creditprogramdao;
 
 import com.marina.entity.creditprogram.CreditProgram;
 import dao.CRUDDAO;
-import dao.userdao.ClientDAO;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -25,10 +23,7 @@ public class CreditProgramDAO extends CRUDDAO<CreditProgram>{
     
     private CreditProgram creditProgram;
     private ArrayList<CreditProgram> creditProgramList;
-
-    public CreditProgramDAO(Connection dbConnection) {
-        super(dbConnection);
-    }
+    private static Logger creditProgramDAOLogger = Logger.getLogger(CreditProgramDAO.class.getName());
 
     @Override
     public CreditProgram read(int id) {
@@ -40,12 +35,13 @@ public class CreditProgramDAO extends CRUDDAO<CreditProgram>{
             resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
                 creditProgram = new CreditProgram();
+                creditProgram.setID(resultSet.getInt("id"));
                 creditProgram.setTitle(resultSet.getString("title"));
                 creditProgram.setShortDescription(resultSet.getString("short_description"));
                 creditProgram.setFullDescription(resultSet.getString("full_description"));
             }
         } catch (SQLException ex) {
-            Logger.getLogger(ClientDAO.class.getName()).log(Level.SEVERE, null, ex);
+            creditProgramDAOLogger.log(Level.SEVERE, "Exception in reading credit program info by id: ", ex);
         }
 
         return creditProgram;
@@ -61,13 +57,14 @@ public class CreditProgramDAO extends CRUDDAO<CreditProgram>{
             resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
                 creditProgram = new CreditProgram();
+                creditProgram.setID(resultSet.getInt("id"));
                 creditProgram.setTitle(resultSet.getString("title"));
                 creditProgram.setShortDescription(resultSet.getString("short_description"));
                 creditProgram.setFullDescription(resultSet.getString("full_description"));
                 creditProgramList.add(creditProgram);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(ClientDAO.class.getName()).log(Level.SEVERE, null, ex);
+            creditProgramDAOLogger.log(Level.SEVERE, "Exception in reading credit program info: ", ex);
         }
 
         return creditProgramList;
